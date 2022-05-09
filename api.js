@@ -15,10 +15,17 @@ const {Team}  = require('./Classes')
 const {getSeasons} = require('./controllers')
 
 season = getSeasons();
-app.get('/', (req,res) => {res.status(200).json({"k":"kj"})})
+
+
+function getAge(date) { 
+    var diff = Date.now() - date.getTime();
+    var age = new Date(diff); 
+    return Math.abs(age.getUTCFullYear() - 1970);
+}
+
+app.get('/', (req,res) => {res.status(200).json({})})
 app.get('/api/matches/:league/:date', (req, res) => {
 
-    // console.log(season);
     const date = req.params.date
     const league = req.params.league
 
@@ -62,7 +69,7 @@ app.get('/api/matches/:league/:date', (req, res) => {
     db.all("SELECT team_long_name,team_api_id,team_short_name FROM Team where team_long_name= '"+name+"'", function(err,team){
         if(team.length == 0)
             {db.close()
-            res.status(200).json({"k":"l"})
+            res.status(200).json({})
         }
             else{
         db.all("SELECT * FROM Team_Attributes where team_api_id = "+ team[0].team_api_id, function(err, attributes){
@@ -93,7 +100,7 @@ app.get('/api/matches/:league/:date', (req, res) => {
         db.all("SELECT * FROM Player_Attributes where player_api_id = "+ player[0].player_api_id, function(err, attributes){
             let temp = player[0]
             let att = attributes[0]
-            let age = 0;
+            let age = getAge(new Date(Number(temp.birthday.slice(0,4)), Number(temp.birthday.slice(5,7)), Number(temp.birthday.slice(7,9))));
             let thisplayer = new Player(temp.player_name, age, temp.height, temp.weight,att.overall_rating, att.potential, att.preferred_foot, att.attacking_work_rate, att.defensive_work_rate, att.crossing,att.finishing) 
             db.close();
             res.status(200).json(thisplayer.obj()) 

@@ -216,11 +216,18 @@
 //   };
 // request(options1, callback)
 // console.log(season);
-let date = "2022-03-28"
-var datearray = date.split("-")
-var dateAsDate = new Date(datearray[0], datearray[1] - 1, datearray[2])
-dateAsDate.setDate(dateAsDate.getDate() + 1)
-console.log(dateAsDate.getFullYear());
-const today = (dateAsDate.getFullYear())+"-"+(dateAsDate.getMonth()+1)+"-"+(dateAsDate.getDate())
-console.log(today);
+// let date = "2022-03-28"
+// var datearray = date.split("-")
+// var dateAsDate = new Date(datearray[0], datearray[1] - 1, datearray[2])
+// dateAsDate.setDate(dateAsDate.getDate() + 1)
+// console.log(dateAsDate.getFullYear());
+// const today = (dateAsDate.getFullYear())+"-"+(dateAsDate.getMonth()+1)+"-"+(dateAsDate.getDate())
+// console.log(today);
 
+const date = "1991-05-13"
+function getAge(date) { 
+    var diff = Date.now() - date.getTime();
+    var age = new Date(diff); 
+    return Math.abs(age.getUTCFullYear() - 1970);
+}
+console.log(getAge(new Date(Number(date.slice(0,4)), Number(date.slice(5,7)), Number(date.slice(7,9)))));
